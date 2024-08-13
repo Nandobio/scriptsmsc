@@ -1,0 +1,29 @@
+# Carregar pacotes
+library(raster)
+library(corrplot)
+
+# Definir o diretório onde os arquivos das variáveis bioclimáticas estão salvos
+setwd("dir/bioclimvars")
+
+# Lista de arquivos TIF das variáveis bioclimáticas
+arquivos <- list.files(pattern = "\\.tif$")
+
+# Carregar as variáveis bioclimáticas como uma stack de rasters
+bio_stack <- stack(arquivos)
+
+# Verificar os nomes dos arquivos carregados
+print(names(bio_stack))
+
+# Extrair os valores dos rasters
+bio_values <- getValues(bio_stack)
+
+# Calcular a matriz de correlação
+cor_matrix <- cor(bio_values, use = "complete.obs")
+
+# Visualizar a matriz de correlação
+print(cor_matrix)
+
+# Criar um mapa de calor da matriz de correlação
+corrplot(cor_matrix, method = "color", type = "upper", 
+         tl.col = "black", tl.srt = 45, 
+         addCoef.col = "black", number.cex = 0.7)
