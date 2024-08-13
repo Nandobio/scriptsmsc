@@ -40,6 +40,6 @@ data_for_maxent_processed <- na.omit(data_for_maxent_processed)
 maxent_model <- maxnet(p = data_for_maxent_processed$presence, 
                        data = data_for_maxent_processed[, names(predictors)])
 
-# Visualize o modelo
+# model print
 print(maxent_model)
 
