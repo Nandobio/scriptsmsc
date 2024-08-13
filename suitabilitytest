@@ -2,9 +2,8 @@ library(raster)
 library(maxnet)
 library(sf)
 
-# dir bioclimvars&csvdata
-bioclim_path <- "dir/rasters"
-csv_path <- "dir/csv"
+bioclim_path <- "dir/rasters/"
+csv_path <- "dir/data.csv"
 
 # stack bioclimvars
 bioclim_filtered <- stack(list.files(path = bioclim_path, pattern = ".tif$", full.names = TRUE))
@@ -14,39 +13,33 @@ data <- read.csv(csv_path)
 
 # convert ocour to sf
 data_sf <- st_as_sf(data, coords = c("X", "Y"), crs = 4326)
-
 # sf to SpatialPoints
 data_sp <- as(data_sf, "Spatial")
 
 # Extract values biovars for the points of occurrence and pseudo-absence
 bioclim_values <- extract(bioclim_filtered, data_sp)
 
-# convert etract values to data frame
+# convert extract values to data frame
 data_for_maxent <- as.data.frame(bioclim_values)
 
 # Add presence and pseudo-absence columns to the variable data frame
 data_for_maxent$presence <- data$presence
 data_for_maxent$pseudoabsence <- data$pseudoabsence
 
-# Separate the response variable (presence) and the predictors
-# Inclua apenas a coluna de presença no modelo (0 para pseudo-ausência, 1 para presença)
+# Ensure presence is a binary response variable
 data_for_maxent$presence <- as.integer(data_for_maxent$presence == 1)
 
-# Remove columns nom predictors
+# Remove columns nom predictors (adjust this part to match the actual predictor names in your data)
 predictors <- data_for_maxent[, names(data_for_maxent) %in% c("bioclim_1", "bioclim_2", "bioclim_3", "bioclim_4")]
 
-# combine predic + presence
+# Combine predictors and presence
 data_for_maxent_processed <- cbind(predictors, presence = data_for_maxent$presence)
 data_for_maxent_processed <- na.omit(data_for_maxent_processed)
 
-# Maxent formula
-formula <- as.formula(paste("presence ~", paste(names(predictors), collapse = " + ")))
-
-# run mxnt
+# run maxnet
 maxent_model <- maxnet(p = data_for_maxent_processed$presence, 
-                       data = data_for_maxent_processed[, names(predictors)], 
-                       f = formula)
+                       data = data_for_maxent_processed[, names(predictors)])
 
-# Salve o modelo, se necessário
-save(maxent_model, file = "dir/maxent_model.RData")
+# Visualize o modelo
 print(maxent_model)
+
