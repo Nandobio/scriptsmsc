@@ -6,7 +6,7 @@
 library(terra)
 
 # Define o caminho da pasta onde estão os arquivos de preditores bioclimáticos
-bio_folder = "./output/predictors/predmod/"
+bio_folder = "pred dir"
 
 # Lista todos os arquivos com extensão .asc na pasta de preditores
 bio_path <- list.files(path = bio_folder, pattern='*.asc$')
@@ -18,7 +18,7 @@ bio_files <- paste(bio_folder, bio_path, sep="")
 bio <- rast(bio_files)
 
 # Carrega um shapefile de áreas de calibração com sistema de referência WGS84
-b <- vect("./data/shapes/calibrarea.shp", crs = "EPSG:4326")
+b <- vect("shape", crs = "EPSG:4326")
 
 # Plota o shapefile das áreas de calibração
 plot(b)
@@ -38,7 +38,7 @@ for (i in 1:length(b)){
   id <- v$CLADO
   
   # Cria um diretório de saída com o nome do clado
-  out.dir <- paste0("./output/predictors/predmod/predmodcrop/", id, "/")
+  out.dir <- paste0("out dir", id, "/")
   dir.create(out.dir)
   
   # Salva cada camada raster recortada como arquivo .asc
