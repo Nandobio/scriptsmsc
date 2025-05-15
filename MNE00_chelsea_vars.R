@@ -7,9 +7,9 @@ library(dismo)  # Pacote para funções de modelagem ecológica (inclui a funç�
 library(terra)  # Pacote para manipulação de dados raster
 
 # Definir os caminhos dos arquivos TIF de temperatura mínima, máxima e precipitação
-tmin_dir <- "D:/dadosR/Corte R/dados/cropfiles/tmin"
-tmax_dir <- "D:/dadosR/Corte R/dados/cropfiles/tmax"
-precip_dir <- "D:/dadosR/Corte R/dados/cropfiles/pr"
+tmin_dir <- "tmin dir"
+tmax_dir <- "tmax dir"
+precip_dir <- "precip dir"
 
 # Listar todos os arquivos .tif nas pastas especificadas
 tmin_files <- list.files(tmin_dir, pattern = ".tif$", full.names = TRUE)
