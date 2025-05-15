@@ -8,7 +8,7 @@
 library(terra)
 
 # Carrega o arquivo CSV com os pontos de ocorrência das espécies
-pts <- read.csv("./data/occour/Caimans.csv")
+pts <- read.csv("csv caminho")
 
 # Padroniza os nomes das espécies substituindo espaços por underscores
 pts$sp <- gsub(" ", "_", pts$sp)
@@ -20,7 +20,7 @@ names <- unique(pts$sp)
 for (i in 1:length(names)) {
   
   # Define o caminho da pasta com os preditores recortados para cada espécie
-  pred_folder = paste0("./output/predictors/predmod/predmodcrop/", names[i], "/")
+  pred_folder = paste0("pred_crop dir", names[i], "/")
   
   # Lista todos os arquivos .asc na pasta da espécie atual
   pred_path <- list.files(path = pred_folder, pattern = '*.asc$')
@@ -46,7 +46,7 @@ for (i in 1:length(names)) {
   plot(predNA, main = paste0("Máscara de NA ", names[i]))
   
   # Salva a máscara como arquivo TIFF na pasta de output
-  writeRaster(predNA, paste0("./output/predNA/", names[i], "_predNA.tiff"))
+  writeRaster(predNA, paste0("out dir", names[i], "nome.tiff"))
 }
   
 
